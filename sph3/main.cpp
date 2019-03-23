@@ -38,6 +38,11 @@ void addFromMouse2() {
     world->create_rect((mouseX * 2.0f - width) * k / scl, (mouseY * 2.0f - height) * -k / scl, w, h, 1.0f, 0.0f, -60.0f);
 }
 
+void addFromMouseS() {
+    float k = 2.0f;
+    world->create_rect((mouseX * 2.0f - width) * k / scl, (mouseY * 2.0f - height) * -k / scl, h, h, 1.0f, 0.0f, -60.0f);
+}
+
 void mouseCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if(action == GLFW_RELEASE) {
@@ -49,8 +54,11 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         if(key == GLFW_KEY_C) {
             printf("%d\n", world->count);
         }
-        if(key == GLFW_KEY_S) {
+        if(key == GLFW_KEY_K) {
             printf("%f\n", scl);
+        }
+        if(key == GLFW_KEY_S) {
+            addFromMouseS();
         }
         if(key == GLFW_KEY_W) {
             world->exf *= -1.0f;
@@ -103,7 +111,7 @@ int main(int argc, const char * argv[]) {
     width = (float)mode->width * windowScl;
     height = (float)mode->height * windowScl;
     
-    window = glfwCreateWindow(width, height, "Sim", NULL, NULL);
+    window = glfwCreateWindow(width, height, "sph3", NULL, NULL);
     
     glfwMakeContextCurrent(window);
     glewInit();
@@ -130,7 +138,11 @@ int main(int argc, const char * argv[]) {
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     
-    world->create_rect(0.0f, 0.0f, 40.0f, 80.0f, 1.0f);
+    //world->create_rect(0.0f, 0.0f, 5.0f, 5.0f, 1.0f);
+    
+    world->create_rect(0.0f, 0.0f, 1.0f, 500.0f, 1.0f);
+    
+    world->create_rect(0.0f, 0.0f, 500.0f, 1.0f, 1.0f);
     
     do {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -151,6 +163,10 @@ int main(int argc, const char * argv[]) {
         if(press == GLFW_PRESS) {
             addFromMouse2();
         }
+        
+        //world->create_rect(20.0f, 0.0f, 1.0f, 1.0f, 1.0f, -15.0f, 0.0f);
+        
+        //world->create_rect(-20.0f, 0.0f, 1.0f, 1.0f, 1.0f, 15.0f, 0.0f);
         
         draw();
         

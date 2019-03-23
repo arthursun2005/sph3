@@ -8,6 +8,7 @@ uniform float w0;
 uniform float pressure;
 uniform float h;
 uniform float e;
+uniform float time;
 uniform vec2 exf;
 uniform int count;
 uniform int root;
@@ -26,8 +27,8 @@ void main() {
     vec2 p = texelFetch(P, u, 0).xy;
     vec2 v0 = texelFetch(V, u, 0).xy;
     
-    float Ad = max(texelFetch(U, u, 0).x, w0);
-    float Ap = (Ad - w0) * pressure;
+    //float Ad = max(texelFetch(U, u, 0).x, w0);
+    //float Ap = (Ad - w0) * pressure;
     
     vec2 accel = vec2(0.0f);
     
@@ -60,10 +61,10 @@ void main() {
                 ivec2 joord = ivec2(cell.y%root, cell.y/root);
                 vec2 p1 = texelFetch(P, joord, 0).xy;
                 
-                float Bd = max(texelFetch(U, joord, 0).x, w0);
-                float Bp = (Bd - w0) * pressure;
+                //float Bd = max(texelFetch(U, joord, 0).x, w0);
+                //float Bp = (Bd - w0) * pressure;
                 
-                vec2 dp = p1 - p;
+                vec2 dp = p1 - p + vec2(cos(aq * time), sin(aq * time)) * h * 0.0001f;
                 
                 float r2 = dot(dp, dp);
                 
@@ -76,8 +77,10 @@ void main() {
                 vec2 vd = texelFetch(V, joord, 0).xy - v0;
                 
                 //accel -= (((Ap + Bp) / (2.0f * Ad * Bd)) * w * w * h / Ad * 45.0f / pi * k) * n;
+                //accel += (e / (Ad * Bd) * 45.0f / pi * k) * vd;
+                
                 accel -= (w * k * 80.0f) * n;
-                accel += (e / (Ad * Bd) * 45.0f / pi * k) * vd;
+                accel += (e * 45.0f / pi * k) * vd;
                 
                 ++j;
             }

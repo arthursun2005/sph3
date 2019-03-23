@@ -13,7 +13,7 @@ void World::solve_once(float dt) {
     sort();
     map_to_list();
     
-    weight_particles();
+    //weight_particles();
     solve_pressure(dt);
     step_once(dt);
 }
@@ -53,7 +53,7 @@ void World::solve_pressure(float dt) {
     hashGrid[1].bind();
     offsetList.bind();
     
-    pressures.bind();
+    //pressures.bind();
     
     solver.bind();
     solver.uniform1f("dt", dt);
@@ -66,6 +66,7 @@ void World::solve_pressure(float dt) {
     solver.uniform1f("e", e);
     solver.uniform1f("w0", p0);
     solver.uniform1f("pressure", u);
+    solver.uniform1f("time", glfwGetTime());
     solver.uniform2f("exf", exf);
     
     solver.uniform1i("G", hashGrid[1].id);
